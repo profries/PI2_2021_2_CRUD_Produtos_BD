@@ -1,0 +1,15 @@
+{
+  "name": "CRUD_Produtos_BD",
+  "version": "1.0.0",
+  "description": "CRUD de Produtos utilizando BD",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "Ries",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.7.1"
+  }
+}

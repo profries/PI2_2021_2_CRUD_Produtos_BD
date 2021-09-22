@@ -29,6 +29,68 @@ exports.inserir = (produto, callback) => {
         callback(err, res.rows[0]);
         cliente.end();
     });
+}
 
+exports.buscarPorId = (id, callback) => {
+    const sql = "SELECT * FROM produto WHERE id=$1";
+    const values = [id];
+
+    const cliente = new Client(conexao);
+    cliente.connect();
+    cliente.query(sql, values, (err, res) => { 
+        if(err){
+            callback(err, null);
+        }
+        else if(res.rows && res.rows.length > 0) {
+            callback(null, res.rows[0]);
+        }
+        else {
+            const error = "Produto nao encontrado";
+            callback(error, null);
+        }
+        cliente.end();
+    });
+}
+
+exports.atualizar = (id, produto, callback) => {
+    const sql = "UPDATE produto SET nome=$1, preco=$2 WHERE id=$3 RETURNING *";
+    const values = [produto.nome, produto.preco, id];
+
+    const cliente = new Client(conexao);
+    cliente.connect();
+    cliente.query(sql, values, (err, res) => { 
+        if(err){
+            callback(err, null);
+        }
+        else if(res.rows && res.rows.length > 0) {
+            callback(null, res.rows[0]);
+        }
+        else {
+            const error = "Produto nao encontrado";
+            callback(error, null);
+        }
+        cliente.end();
+    });    
+}
+
+exports.deletar = (id, callback) => {
+    const sql = "DELETE FROM produto WHERE id=$1 RETURNING *";
+    const values = [id];
+
+    const cliente = new Client(conexao);
+    cliente.connect();
+    cliente.query(sql, values, (err, res) => { 
+        if(err){
+            callback(err, null);
+        }
+        else if(res.rowCount > 0) {
+            callback(null, res.rows[0]);
+        }
+        else {
+            const error = "Produto nao encontrado";
+            callback(error, null);
+        }
+        cliente.end();
+    });
 }
 
